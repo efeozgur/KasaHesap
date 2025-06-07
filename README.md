@@ -26,5 +26,5 @@ Kasa Hesap Programı, bir kurumun günlük para giriş-çıkış işlemlerini de
 ### 2. Projeyi Klonlayın
 
 ```bash
-git clone https://github.com/kullaniciadi/kasa-hesap.git
-cd kasa-hesap
+https://github.com/efeozgur/KasaHesap.git
+cd KasaHesap
