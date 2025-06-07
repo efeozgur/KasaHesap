@@ -11,15 +11,15 @@
         }
         else
         {
-            alertClass = "alert-warning"; // metinsel sonuç varsa
+            alertClass = "alert-warning";
         }
     }
 }
 
 <div class="container py-5">
     <div class="row justify-content-center mb-4">
-        <div class="col-md-10">
-            <div class="alert alert-success text-center fw-bold fs-3 shadow-sm rounded-pill">
+        <div class="col-md-12">
+            <div class="alert alert-success text-center fw-bold fs-3 shadow-sm rounded-2">
                 💼 Kasa Hesap Programı
             </div>
         </div>
@@ -29,6 +29,7 @@
         <div class="row g-4">
             <!-- Sol sütun -->
             <div class="col-md-6">
+                @* Sol kutular *@
                 <div class="form-floating mb-3">
                     <input asp-for="PortalEmanet" class="form-control" type="number" step="0.01" required />
                     <label>Portalda Bulunan Emanet Miktarı</label>
@@ -57,6 +58,7 @@
 
             <!-- Sağ sütun -->
             <div class="col-md-6">
+                @* Sağ kutular *@
                 <div class="form-floating mb-3">
                     <input asp-for="EldeSayilanMiktar" class="form-control" type="number" step="0.01" required />
                     <label>Elde Sayılan Miktar</label>
@@ -72,53 +74,50 @@
 
                 <div class="d-grid gap-2 mt-4">
                     <button type="submit" class="btn btn-success btn-lg shadow-sm">💾 Hesapla</button>
-                    <a href="/KasaHesap/Index" class="btn btn-outline-secondary btn-lg shadow-sm">🔄 Sıfırla</a>
+
+
+
+                    @* HESAP SONUCU *@
+                    @if (ViewBag.sonuc != null)
+                    {
+                        <div class="mt-5">
+                            <div class="card border-0 shadow-lg rounded-4" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+                                <div class="card-body px-5 py-4">
+                                    <h5 class="text-center mb-4 fw-bold @alertClass">📊 Hesap Sonucu</h5>
+
+                                    <div class="row mb-2">
+                                        <div class="col text-muted">Elde bulunması gereken</div>
+                                        <div class="col text-end fw-semibold">@ViewBag.EldeBulunmasiGereken</div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-muted">Elde sayılan miktar</div>
+                                        <div class="col text-end fw-semibold">@ViewBag.EldeSayilanMiktar</div>
+                                    </div>
+                                    <div class="row border-top pt-3 mt-3">
+                                        <div class="col fw-bold">Sonuç</div>
+                                        <div class="col text-end fw-bold">@ViewBag.sonuc</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
-
-        <!-- TOAST KONTEYNERİ -->
-        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
-            <div id="hesapToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div id="toastMessage" class="toast-body">
-                        <!-- Dinamik mesaj -->
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Kapat"></button>
-                </div>
-            </div>
-        </div>
-
-        @if (ViewBag.sonuc != null)
-        {
-            <div class="row justify-content-center mt-5">
-                <div class="col-md-8">
-                    <div class="card shadow-lg border-0">
-                        <div class="card-header text-black text-center fs-5 fw-bold @alertClass">
-                            📊 Hesap Sonucu
-                        </div>
-                        <div class="card-body fs-5">
-                            <div class="row mb-2">
-                                <div class="col">Elde bulunması gereken</div>
-                                <div class="col text-end">@ViewBag.EldeBulunmasiGereken</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col">Elde sayılan miktar</div>
-                                <div class="col text-end">@ViewBag.EldeSayilanMiktar</div>
-                            </div>
-                            <div class="row">
-                                <div class="col">Sonuç</div>
-                                <div class="col text-end fw-bold">@ViewBag.sonuc</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
     </form>
+
+    <!-- Toast Bildirimi -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
+        <div id="hesapToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div id="toastMessage" class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Kapat"></button>
+            </div>
+        </div>
+    </div>
 </div>
-<audio id="dingAudio" src="~/sounds/ding.mp3" preload="auto"></audio>
-<audio id="sorunYokAudio" src="~/sounds/sorunyok.mp3" preload="auto"></audio>
+
+
 @section Scripts {
     <script>
         window.addEventListener("DOMContentLoaded", function () {
@@ -129,8 +128,7 @@
                 const toastEl = document.getElementById('hesapToast');
                 const toastBody = document.getElementById('toastMessage');
                 const toast = new bootstrap.Toast(toastEl, { delay: 5000 });
-               // const ding = document.getElementById('dingAudio');
-              //  const sorunyok = document.getElementById('sorunYokAudio');
+
                 toastEl.classList.remove("bg-success", "bg-danger", "bg-primary", "bg-warning");
 
                 const fark = parseFloat(sonucStr);
@@ -138,11 +136,11 @@
                     if (fark === 0) {
                         toastBody.innerHTML = "✅ Kasa hesaplaması doğru. Her şey uyumlu.";
                         toastEl.classList.add("bg-success");
-                        //sorunyok.play();
+                        //document.getElementById('sorunYokAudio').play();
                     } else if (fark > 0) {
                         toastBody.innerHTML = `❌ Kasa eksik! ${fark.toFixed(2)} TL bulunamadı.`;
                         toastEl.classList.add("bg-danger");
-                       // ding.play();
+                        //document.getElementById('dingAudio').play();
                     } else {
                         toastBody.innerHTML = `ℹ️ Kasa fazlası var: +${fark.toFixed(2)} TL`;
                         toastEl.classList.add("bg-primary");
@@ -153,7 +151,6 @@
                 }
 
                 toast.show();
-               
             }
         });
     </script>
