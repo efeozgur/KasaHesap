@@ -19,32 +19,16 @@ namespace KasaHesap.Controllers
             var emanetfark = model.PortalEmanet - model.BankaEmanet;
             var harcfark = model.PortalHarc - model.BankaHarc;
 
-            var eldeBulunmasiGereken = emanetfark + harcfark + model.GelirVergisi + model.DamgaVergisi + model.ProvizyondaBekleyenTutar+model.SlipToplam;
-            float sonuc = eldeBulunmasiGereken - model.EldeSayilanMiktar;
+            var eldeBulunmasiGereken = emanetfark + harcfark + model.GelirVergisi + model.DamgaVergisi;
+            var eldeBulunanMiktar = model.EldeSayilanMiktar + model.SlipToplam + model.ProvizyondaBekleyenTutar;
+            float sonuc = eldeBulunmasiGereken - eldeBulunanMiktar;
 
             ViewBag.EldeBulunmasiGereken = eldeBulunmasiGereken.ToString("0.00");
-            ViewBag.EldeSayilanMiktar = model.EldeSayilanMiktar.ToString("0.00");
+            ViewBag.EldeSayilanMiktar = eldeBulunanMiktar.ToString("0.00");
             ViewBag.sonuc = sonuc.ToString("0.00", CultureInfo.InvariantCulture);
 
 
-            //decimal sonuc = 0;
-            //if (eldeBulunmasiGereken > model.EldeSayilanMiktar)
-            //{
-                
-                
-            //        sonuc = Convert.ToDecimal(eldeBulunmasiGereken - model.EldeSayilanMiktar);
-                
-
-            //}
-            //else if (eldeBulunmasiGereken < model.EldeSayilanMiktar)
-            //{
-            //    sonuc = Convert.ToDecimal(model.EldeSayilanMiktar - eldeBulunmasiGereken);
-                
-            //}
-            //else
-            //{
-            //    sonuc = 0;
-            //}
+           
 
             ViewBag.Sonuc = sonuc;
             return View(model);

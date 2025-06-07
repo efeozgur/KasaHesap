@@ -129,8 +129,8 @@
                 const toastEl = document.getElementById('hesapToast');
                 const toastBody = document.getElementById('toastMessage');
                 const toast = new bootstrap.Toast(toastEl, { delay: 5000 });
-                const ding = document.getElementById('dingAudio');
-                const sorunyok = document.getElementById('sorunYokAudio');
+               // const ding = document.getElementById('dingAudio');
+              //  const sorunyok = document.getElementById('sorunYokAudio');
                 toastEl.classList.remove("bg-success", "bg-danger", "bg-primary", "bg-warning");
 
                 const fark = parseFloat(sonucStr);
@@ -138,11 +138,11 @@
                     if (fark === 0) {
                         toastBody.innerHTML = "✅ Kasa hesaplaması doğru. Her şey uyumlu.";
                         toastEl.classList.add("bg-success");
-                        sorunyok.play();
+                        //sorunyok.play();
                     } else if (fark > 0) {
                         toastBody.innerHTML = `❌ Kasa eksik! ${fark.toFixed(2)} TL bulunamadı.`;
                         toastEl.classList.add("bg-danger");
-                        ding.play();
+                       // ding.play();
                     } else {
                         toastBody.innerHTML = `ℹ️ Kasa fazlası var: +${fark.toFixed(2)} TL`;
                         toastEl.classList.add("bg-primary");
